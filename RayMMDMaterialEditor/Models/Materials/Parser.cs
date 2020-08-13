@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace RayMMDMaterialEditor.Models.Materials {
@@ -28,8 +31,7 @@ namespace RayMMDMaterialEditor.Models.Materials {
             if (s.StartsWith("#")) {
                 return ParsePreprocessor(s.Substring(1));
             } else {
-                //return ParseFloatN(s);
-                return (null, s);
+                return ParseFloatN(s);
             }
         }
 
@@ -170,6 +172,92 @@ namespace RayMMDMaterialEditor.Models.Materials {
             }
 
             return (sign * n, s.Substring(digitEnd));
+        }
+
+        private static (Statement, string) ParseFloatN(string s) {
+            var (keyword1, rest1) = ParseIdentifier(s);
+            if (keyword1 != "const") return (null, s);
+
+            var (keyword2, rest2) = ParseIdentifier(rest1);
+            int dim;
+            if (keyword2 == "float") dim = 1;
+            else if (keyword2 == "float2") dim = 2;
+            else if (keyword2 == "float3") dim = 3;
+            else if (keyword2 == "float4") dim = 4;
+            else return (null, s);
+
+            var (identifier, rest3) = ParseIdentifier(rest2);
+
+            rest3 = rest3.TrimStart();
+            if (!rest3.StartsWith("=")) return (null, s);
+            rest3 = rest3.Substring(1);
+
+            var (f, rest4) = ParseFloat(rest3);
+            if (float.IsNaN(f)) return (null, s);
+
+            var floatN = new float[dim];
+            for (int i = 0; i < dim; ++i) {
+                floatN[i] = f;
+            }
+
+            rest4 = rest4.TrimStart();
+            if (!rest4.StartsWith(";")) return (null, s);
+            rest4 = rest4.Substring(1);
+
+            return (new FloatNStatement(identifier, floatN), rest4);
+        }
+
+        private static (float, string) ParseFloat(string s) {
+            s = s.TrimStart();
+            var t = s + '\0';
+
+            // sign
+            int i = 0;
+            if (t[i] == '+' || t[i] == '-') {
+                ++i;
+            }
+
+            // digit sequence before period
+            bool digitExists = false;
+            for (; i < t.Length; ++i) {
+                if (t[i] < '0' || t[i] > '9') break;
+                digitExists = true;
+            }
+
+            if (t[i] == '.') {
+                ++i;
+                // digit sequence after period
+                for (; i < t.Length; ++i) {
+                    if (t[i] < '0' || t[i] > '9') break;
+                    digitExists = true;
+                }
+            }
+
+            // この時点で少なくとも１つは数字が出現していなければならない
+            if (!digitExists) {
+                return (float.NaN, s);
+            }
+
+            if (t[i] == 'e' || t[i] == 'E') {
+                ++i;
+                // sign
+                if (t[i] == '+' || t[i] == '-') {
+                    ++i;
+                }
+                // digit sequence after e
+                for (; ; ++i) {
+                    if (t[i] < '0' || t[i] > '9') break;
+                }
+            }
+
+            float f = float.Parse(t.Substring(0, i), CultureInfo.InvariantCulture);
+
+            // floating stuff
+            if (t[i] == 'f' || t[i] == 'F') {
+                ++i;
+            }
+
+            return (f, s.Substring(i));
         }
     }
 }

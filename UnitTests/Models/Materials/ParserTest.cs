@@ -38,5 +38,41 @@ namespace UnitTests.Models.Materials {
             Assert.Equal(expectedName, defineStatement.Name);
             Assert.Equal(expectedValue, defineStatement.Value);
         }
+
+        [Theory]
+        [InlineData("const float x = 1.5;", "x", 1.5f)]
+        [InlineData("const float x = 0;", "x", 0.0f)]
+        [InlineData("const float x = 123.456;", "x", 123.456f)]
+        [InlineData("const float x = .5;", "x", 0.5f)]
+        [InlineData("const float x = 2e2;", "x", 200f)]
+        [InlineData("const float x = 2e-2;", "x", 0.02f)]
+        [InlineData("const float x = 2E-2;", "x", 0.02f)]
+        [InlineData("const float x = 0.5f;", "x", 0.5f)]
+        [InlineData("const float x = 0.5F;", "x", 0.5f)]
+        [InlineData("const float x = -3.14;", "x", -3.14f)]
+        public void ParseFloatStatement(string source, string expectedName, float expectedValue) {
+            var statements = Parser.Parse(source);
+            Assert.Single(statements);
+
+            var statement = statements[0];
+            Assert.IsType<FloatNStatement>(statement);
+
+            var floatNStatement = (FloatNStatement)statement;
+            Assert.Equal(expectedName, floatNStatement.Name);
+            Assert.Single(floatNStatement.Values);
+            Assert.Equal(expectedValue, floatNStatement.Values[0]);
+        }
+
+        [Theory]
+        [InlineData("const float x = .;")]
+        [InlineData("const float x = +;")]
+        [InlineData("const float x = e5;")]
+        public void ParseFloatStatement_ParseError(string source) {
+            var statements = Parser.Parse(source);
+            Assert.Single(statements);
+
+            var statement = statements[0];
+            Assert.IsType<OpaqueText>(statement);
+        }
     }
 }
