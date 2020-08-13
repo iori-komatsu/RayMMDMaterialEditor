@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace RayMMDMaterialEditor.Models.MaterialFiles {
+namespace RayMMDMaterialEditor.Models.Materials {
     public class File {
         public string FileName { get; }
         public List<Statement> Statements { get; }

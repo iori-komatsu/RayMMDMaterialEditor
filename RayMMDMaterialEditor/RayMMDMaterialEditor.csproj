@@ -93,9 +93,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\MaterialFiles\File.cs" />
-    <Compile Include="Models\MaterialFiles\Parser.cs" />
-    <Compile Include="Models\MaterialFiles\Statement.cs" />
+    <Compile Include="Models\Materials\File.cs" />
+    <Compile Include="Models\Materials\Parser.cs" />
+    <Compile Include="Models\Materials\Statement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

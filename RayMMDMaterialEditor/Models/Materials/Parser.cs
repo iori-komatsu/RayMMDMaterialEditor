@@ -2,8 +2,8 @@
 using System.IO;
 using System.Text;
 
-namespace RayMMDMaterialEditor.Models.MaterialFiles {
-    static class Parser {
+namespace RayMMDMaterialEditor.Models.Materials {
+    public static class Parser {
         public static List<Statement> Parse(string content) {
             var statements = new List<Statement>();
             var reader = new StringReader(content);
@@ -73,7 +73,7 @@ namespace RayMMDMaterialEditor.Models.MaterialFiles {
             s = s.TrimStart();
 
             if (!s.StartsWith("\"")) { return (null, s); }
-            s.Substring(1);
+            s = s.Substring(1);
 
             var builder = new StringBuilder();
             int literalEnd = -1;
@@ -131,7 +131,7 @@ namespace RayMMDMaterialEditor.Models.MaterialFiles {
             }
 
             long n = 0;
-            int digitEnd = -1;
+            int digitEnd = s.Length;
             for (int i = 0; i < s.Length; ++i) {
                 int cc = s[i];
                 if (radix == 10) {
@@ -162,7 +162,7 @@ namespace RayMMDMaterialEditor.Models.MaterialFiles {
                 }
             }
 
-            if (digitEnd != -1) {
+            if (digitEnd != s.Length) {
                 char c = s[digitEnd];
                 if (c == 'u' || c == 'U' || c == 'l' || c == 'L') {
                     digitEnd++;

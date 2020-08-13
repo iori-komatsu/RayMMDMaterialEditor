@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayMMDMaterialEditor", "RayMMDMaterialEditor\RayMMDMaterialEditor.csproj", "{B30076E9-7220-4D46-A8B2-6EE7D3804EC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{A9902D1D-8000-4BCB-B2DF-9A2F357DA635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B30076E9-7220-4D46-A8B2-6EE7D3804EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B30076E9-7220-4D46-A8B2-6EE7D3804EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B30076E9-7220-4D46-A8B2-6EE7D3804EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9902D1D-8000-4BCB-B2DF-9A2F357DA635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9902D1D-8000-4BCB-B2DF-9A2F357DA635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9902D1D-8000-4BCB-B2DF-9A2F357DA635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9902D1D-8000-4BCB-B2DF-9A2F357DA635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

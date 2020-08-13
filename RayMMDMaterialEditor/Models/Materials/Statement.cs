@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace RayMMDMaterialEditor.Models.MaterialFiles {
+namespace RayMMDMaterialEditor.Models.Materials {
     public abstract class Statement {
         public abstract string Render();
     }
