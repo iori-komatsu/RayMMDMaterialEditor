@@ -14,7 +14,7 @@ namespace RayMMDMaterialEditor.Models.Materials {
                 if (line == null) { break; }
 
                 var (statement, rest) = ParseLine(line);
-                if (statement == null || rest != "") {
+                if (statement == null || rest.Trim() != "") {
                     statement = new OpaqueText(line);
                 }
 
