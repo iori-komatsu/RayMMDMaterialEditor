@@ -10,6 +10,7 @@ namespace UnitTests.Models.Materials {
         [InlineData("#define HEX 0xff", "HEX", 255)]
         [InlineData("#define OCT 010", "OCT", 8)]
         [InlineData("#define WITH_SUFFIX 123L", "WITH_SUFFIX", 123L)]
+        [InlineData("#define NEGATIVE -1", "NEGATIVE", -1L)]
         public void ParseIntegerDefineStatement(string source, string expectedName, long expectedValue) {
             var statements = Parser.Parse(source);
             Assert.Single(statements);

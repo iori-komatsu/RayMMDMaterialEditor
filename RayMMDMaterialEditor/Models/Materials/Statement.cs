@@ -37,13 +37,13 @@ namespace RayMMDMaterialEditor.Models.Materials {
 
             var builder = new StringBuilder();
             foreach (char c in s) {
-                if (c == 'a') builder.Append("\\a");
-                else if (c == 'b') builder.Append("\\b");
-                else if (c == 'f') builder.Append("\\f");
-                else if (c == 'n') builder.Append("\\n");
-                else if (c == 'r') builder.Append("\\r");
-                else if (c == 't') builder.Append("\\t");
-                else if (c == 'v') builder.Append("\\v");
+                if (c == '\a') builder.Append("\\a");
+                else if (c == '\b') builder.Append("\\b");
+                else if (c == '\f') builder.Append("\\f");
+                else if (c == '\n') builder.Append("\\n");
+                else if (c == '\r') builder.Append("\\r");
+                else if (c == '\t') builder.Append("\\t");
+                else if (c == '\v') builder.Append("\\v");
                 else if (c == '"') builder.Append("\\\"");
                 else if (c == '\\') builder.Append("\\\\");
                 else builder.Append(c);
