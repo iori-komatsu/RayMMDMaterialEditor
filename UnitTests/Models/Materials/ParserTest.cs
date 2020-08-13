@@ -67,6 +67,7 @@ namespace UnitTests.Models.Materials {
         [InlineData("const float x = .;")]
         [InlineData("const float x = +;")]
         [InlineData("const float x = e5;")]
+        [InlineData("const float x = 1e;")]
         public void ParseFloatStatement_ParseError(string source) {
             var statements = Parser.Parse(source);
             Assert.Single(statements);

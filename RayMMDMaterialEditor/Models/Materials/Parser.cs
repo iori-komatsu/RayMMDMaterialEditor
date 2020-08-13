@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace RayMMDMaterialEditor.Models.Materials {
@@ -245,8 +243,13 @@ namespace RayMMDMaterialEditor.Models.Materials {
                     ++i;
                 }
                 // digit sequence after e
-                for (; ; ++i) {
+                digitExists = false;
+                for (; i < t.Length; ++i) {
                     if (t[i] < '0' || t[i] > '9') break;
+                    digitExists = true;
+                }
+                if (!digitExists) {
+                    return (float.NaN, s);
                 }
             }
 
