@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:RayMMDMaterialEditor"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Name="menuOpen" Header="_Open" Click="menuOpen_Click"/>
+            </MenuItem>
+        </Menu>
+        <TextBox Name="tbMaterial" AcceptsReturn="True"/>
+    </DockPanel>
 </Window>

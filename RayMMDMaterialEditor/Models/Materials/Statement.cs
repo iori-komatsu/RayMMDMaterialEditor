@@ -83,6 +83,8 @@ namespace RayMMDMaterialEditor.Models.Materials {
             var builder = new StringBuilder();
             builder.Append("const ");
             builder.Append(TypeName(Values));
+            builder.Append(" ");
+            builder.Append(Name);
             builder.Append(" = ");
             if (Values.All(x => x == Values[0])) {
                 builder.Append(RenderFloat(Values[0]));
