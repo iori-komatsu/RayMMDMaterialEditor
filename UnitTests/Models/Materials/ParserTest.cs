@@ -76,5 +76,25 @@ namespace UnitTests.Models.Materials {
             var statement = statements[0];
             Assert.IsType<OpaqueText>(statement);
         }
+
+        [Theory]
+        [InlineData("const float x = float(1);", "x", new float[] { 1 })]
+        [InlineData("const float2 x = float2(1, 2);", "x", new float[] { 1, 2 })]
+        [InlineData("const float3 x = float3(1, 2, 3);", "x", new float[] { 1, 2, 3 })]
+        [InlineData("const float4 x = float4(1, 2, 3, 4);", "x", new float[] { 1, 2, 3, 4 })]
+        [InlineData("const float4 x = float2(1, 2);", "x", new float[] { 1, 2, 0, 0 })]
+        [InlineData("const float2 x = float4(1, 2, 3, 4);", "x", new float[] { 1, 2 })]
+        [InlineData("const float4 x = 1;", "x", new float[] { 1, 1, 1, 1 })]
+        public void ParseFloatStatement_VectorValue(string source, string expectedName, float[] expectedValue) {
+            var statements = Parser.Parse(source);
+            Assert.Single(statements);
+
+            var statement = statements[0];
+            Assert.IsType<FloatNStatement>(statement);
+
+            var floatNStatement = (FloatNStatement)statement;
+            Assert.Equal(expectedName, floatNStatement.Name);
+            Assert.Equal(expectedValue, floatNStatement.Values);
+        }
     }
 }

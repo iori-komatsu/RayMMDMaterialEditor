@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -191,7 +192,9 @@ namespace RayMMDMaterialEditor.Models.Materials {
             rest3 = rest3.Substring(1);
 
             var (f, rest4) = ParseFloat(rest3);
-            if (float.IsNaN(f)) return (null, s);
+            if (float.IsNaN(f)) {
+                return ParseFloatN_VectorValue(s, rest3, identifier, dim);
+            }
 
             var floatN = new float[dim];
             for (int i = 0; i < dim; ++i) {
@@ -203,6 +206,48 @@ namespace RayMMDMaterialEditor.Models.Materials {
             rest4 = rest4.Substring(1);
 
             return (new FloatNStatement(identifier, floatN), rest4);
+        }
+
+        private static (Statement, string) ParseFloatN_VectorValue(string s, string rest0, string identifier, int typeDim) {
+            var (keyword, rest) = ParseIdentifier(rest0);
+
+            int dim;
+            if (keyword == "float") dim = 1;
+            else if (keyword == "float2") dim = 2;
+            else if (keyword == "float3") dim = 3;
+            else if (keyword == "float4") dim = 4;
+            else return (null, s);
+
+            rest = rest.TrimStart();
+            if (!rest.StartsWith("(")) return (null, s);
+            rest = rest.Substring(1);
+
+            var floatN = new float[typeDim];
+            for (int i = 0; i < dim; ++i) {
+                if (i != 0) {
+                    rest = rest.TrimStart();
+                    if (!rest.StartsWith(",")) return (null, s);
+                    rest = rest.Substring(1);
+                }
+
+                var (f, rest_) = ParseFloat(rest);
+                if (float.IsNaN(f)) return (null, s);
+
+                if (i < typeDim) {
+                    floatN[i] = f;
+                }
+                rest = rest_;
+            }
+
+            rest = rest.TrimStart();
+            if (!rest.StartsWith(")")) return (null, s);
+            rest = rest.Substring(1);
+
+            rest = rest.TrimStart();
+            if (!rest.StartsWith(";")) return (null, s);
+            rest = rest.Substring(1);
+
+            return (new FloatNStatement(identifier, floatN), rest);
         }
 
         private static (float, string) ParseFloat(string s) {
